@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Delete all local branches EXCEPT 'main', 'demo', and any extras passed via --keep
+# Usage: declutter [--keep branch1] [--keep branch2] ...
+
+protected="main|demo"
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --keep) protected="$protected|$2"; shift 2 ;;
+    *) echo "Unknown option: $1"; exit 1 ;;
+  esac
+done
+
+echo "🧨 Deleting all local branches except: ${protected//|/, }..."
+
+branches_to_delete=$(git branch | grep -vE "^\*|$protected")
+
+for branch in $branches_to_delete; do
+  echo "🗑️  Deleting branch: $branch"
+  git branch -D "$branch"
+done
+
+echo "✅ Cleanup complete. Remaining branches:"
+git branch

@@ -3,7 +3,7 @@
 # Delete all local branches EXCEPT 'main', 'demo', and any extras passed via --keep
 # Usage: declutter [--keep branch1] [--keep branch2] ...
 
-protected="main|demo"
+protected="main|demo|production"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) protected="$protected|$2"; shift 2 ;;
